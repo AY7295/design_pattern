@@ -99,7 +99,7 @@ func CustomDoorBuilder(material, color string, size, thickness int, lockBuilder 
 		size:      size,
 		thickness: thickness,
 	}
-	if len(lockBuilder) == 0 {
+	if len(lockBuilder) != 0 && lockBuilder[0] != nil {
 		doorBuilder.lockBuilder = lockBuilder[0]
 	} else {
 		doorBuilder.lockBuilder = CustomLockBuilder(material, color, size/10)

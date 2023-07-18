@@ -27,10 +27,18 @@ type Lock struct {
 	Size     int
 }
 
+type Roof struct {
+	Material string
+	Color    string
+	Size     int
+	Shape    string
+}
+
 type House struct {
 	Windows []Window
 	Walls   []Wall
 	Doors   []Door
+	Roof    Roof
 }
 
 func (h House) Information() map[string]any {
@@ -38,10 +46,11 @@ func (h House) Information() map[string]any {
 		"windows": h.Windows,
 		"walls":   h.Walls,
 		"doors":   h.Doors,
+		"roof":    h.Roof,
 	}
 }
 
-type Builder interface {
+type ComponentBuilder interface {
 	SetMaterial(material string)
 	SetColor(color string)
 	SetSize(size int)
@@ -55,25 +64,31 @@ type LockBuilder interface {
 }
 
 type WallBuilder interface {
-	Builder
+	ComponentBuilder
 	SetThickness(thickness int)
 	Build() Wall
 }
 
 type WindowBuilder interface {
-	Builder
+	ComponentBuilder
 	Build() Window
 }
 
 type DoorBuilder interface {
-	Builder
+	ComponentBuilder
 	SetThickness(thickness int)
 	SetLockBuilder(lockBuilder LockBuilder)
 	Build() Door
 }
 
+type RoofBuilder interface {
+	ComponentBuilder
+	SetShape(shape string)
+	Build() Roof
+}
+
 type Supervisor interface {
-	SetBuilders(builders ...Builder)
+	SetBuilders(builders ...ComponentBuilder)
 	SetComponentCount(walls, windows, doors int)
 	BuildHouse() House
 }
